@@ -64,7 +64,9 @@ const App: React.FC = () => {
 
     const [rotation, setRotation] = useState(0);
     const spinSpeed = useRef(0);
-    const animationFrameId = useRef<number>();
+    // FIX: Initialize useRef with null and update the type to allow null.
+    // The original `useRef<number>()` is incorrect because it requires an initial value.
+    const animationFrameId = useRef<number | null>(null);
 
     const handleLogoClick = () => {
         spinSpeed.current += 15;
@@ -84,7 +86,10 @@ const App: React.FC = () => {
         };
 
         if (Math.abs(spinSpeed.current) > 15) { // only start new animation if not already spinning fast
-             cancelAnimationFrame(animationFrameId.current as number);
+            // FIX: Add a guard to ensure animationFrameId.current is not null before calling cancelAnimationFrame.
+            if (animationFrameId.current) {
+                cancelAnimationFrame(animationFrameId.current);
+            }
              animate();
         }
     };
