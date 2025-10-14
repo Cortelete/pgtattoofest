@@ -20,7 +20,7 @@ const EVENT_WHATSAPP = "5542999126198";
 
 const AboutModalContent: React.FC = () => (
     <div className="prose prose-invert max-w-none text-gray-300 max-h-[70vh] overflow-y-auto pr-2">
-        <h2 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-orange-400 mb-4 text-center">🖋️ O que é a PG TATTOO FEST?</h2>
+        <h2 className="text-2xl font-bold animate-text-gradient mb-4 text-center">🖋️ O que é a PG TATTOO FEST?</h2>
         <p className="text-lg text-center mb-6">A Convenção de Tatuagem de Ponta Grossa</p>
 
         <div className="space-y-4">
@@ -47,7 +47,7 @@ const AboutModalContent: React.FC = () => (
 
 const LocationModalContent: React.FC = () => (
     <div>
-        <h2 className="text-2xl font-bold text-center mb-4 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-orange-400">Localização</h2>
+        <h2 className="text-2xl font-bold text-center mb-4 animate-text-gradient">Localização</h2>
         <p className="text-center text-gray-300 mb-4">Clube Verde (centro) - Ponta Grossa PR</p>
         <div className="aspect-video w-full rounded-lg overflow-hidden border-2 border-purple-500/50">
             <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3612.337190011504!2d-50.160128388836516!3d-25.09033397766629!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94e81a3fcfb972ef%3A0x77e544310d9ba50c!2sClube%20Verde%20Sede%20Social!5e0!3m2!1spt-BR!2sbr!4v1719258284699!5m2!1spt-BR!2sbr" width="100%" height="100%" style={{ border: 0 }} allowFullScreen={true} loading="lazy" referrerPolicy="no-referrer-when-downgrade"></iframe>
@@ -64,8 +64,6 @@ const App: React.FC = () => {
 
     const [rotation, setRotation] = useState(0);
     const spinSpeed = useRef(0);
-    // FIX: Initialize useRef with null and update the type to allow null.
-    // The original `useRef<number>()` is incorrect because it requires an initial value.
     const animationFrameId = useRef<number | null>(null);
 
     const handleLogoClick = () => {
@@ -85,8 +83,7 @@ const App: React.FC = () => {
             }
         };
 
-        if (Math.abs(spinSpeed.current) > 15) { // only start new animation if not already spinning fast
-            // FIX: Add a guard to ensure animationFrameId.current is not null before calling cancelAnimationFrame.
+        if (Math.abs(spinSpeed.current) > 15) { 
             if (animationFrameId.current) {
                 cancelAnimationFrame(animationFrameId.current);
             }
@@ -151,7 +148,7 @@ const App: React.FC = () => {
             case ModalType.RESERVATION:
                 return (
                     <form onSubmit={handleReservationSubmit}>
-                        <h2 className="text-2xl font-bold text-center mb-4 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-orange-400">Reserva de Estande</h2>
+                        <h2 className="text-2xl font-bold text-center mb-4 animate-text-gradient">Reserva de Estande</h2>
                         <p className="text-center text-gray-300 mb-6">Preencha seus dados para entrar em contato.</p>
                         <div className="space-y-4">
                             <input name="name" type="text" placeholder="Seu Nome Completo" required className="w-full p-3 bg-gray-800 border border-purple-500/50 rounded-lg focus:ring-2 focus:ring-orange-500 focus:outline-none" />
@@ -164,7 +161,7 @@ const App: React.FC = () => {
             case ModalType.GROUP_INVITE:
                 return (
                     <div>
-                        <h2 className="text-2xl font-bold text-center mb-4 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-orange-400">Grupo de Telas PG Tattoo Fest</h2>
+                        <h2 className="text-2xl font-bold text-center mb-4 animate-text-gradient">Grupo de Telas PG Tattoo Fest</h2>
                         <p className="text-center text-gray-300 mb-6">Participe do nosso grupo exclusivo para artistas e entusiastas para discutir e compartilhar telas e artes.</p>
                         <a href="https://chat.whatsapp.com/GOKZhjfstJ68TvEPcmd0jL" target="_blank" rel="noopener noreferrer" className="block w-full text-center bg-green-500 text-white font-bold py-3 px-4 rounded-lg hover:bg-green-600 transition-colors duration-300">
                             Entrar no Grupo
@@ -174,8 +171,8 @@ const App: React.FC = () => {
             case ModalType.DEVELOPER:
                  return (
                     <form onSubmit={handleDeveloperContactSubmit}>
-                        <h2 className="text-2xl font-bold text-center mb-2 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-orange-400">Contato do Desenvolvedor</h2>
-                         <p className="text-center text-gray-400 mb-4">Desenvolvido por <a href="https://www.instagram.com/inteligenciarte.ia" target="_blank" rel="noopener noreferrer" className="font-bold text-orange-400 hover:underline">InteligenciArte.IA ✨</a></p>
+                        <h2 className="text-2xl font-bold text-center mb-2 animate-text-gradient">Contato do Desenvolvedor</h2>
+                         <p className="text-center text-gray-400 mb-4">Desenvolvido por <a href="https://www.instagram.com/inteligenciarte.ia" target="_blank" rel="noopener noreferrer" className="font-bold animate-text-gradient hover:opacity-80 transition-opacity">InteligenciArte.IA ✨</a></p>
                         <p className="text-center text-gray-300 mb-6">Quer um site incrível como esse? Fale comigo! 🚀</p>
                         <div className="space-y-4">
                             <input name="name" type="text" placeholder="Seu Nome" required className="w-full p-3 bg-gray-800 border border-purple-500/50 rounded-lg focus:ring-2 focus:ring-orange-500 focus:outline-none" />
@@ -200,36 +197,36 @@ const App: React.FC = () => {
 
 
     return (
-        <div className="min-h-screen w-full bg-gradient-to-br from-gray-900 via-purple-900 to-black animate-gradient text-white flex flex-col items-center justify-between p-4 font-sans">
+        <div className="min-h-screen w-full bg-gradient-to-br from-gray-900 via-purple-900 to-black animate-gradient text-white flex flex-col items-center justify-between p-2 sm:p-4 font-sans">
             <main className="w-full max-w-md mx-auto flex-grow flex flex-col items-center justify-center">
-                <div className="w-full bg-black bg-opacity-20 backdrop-blur-md rounded-2xl p-6 md:p-8 shadow-2xl shadow-purple-900/40 border border-purple-500/30">
+                <div className="w-full bg-black bg-opacity-20 backdrop-blur-md rounded-2xl p-4 sm:p-6 shadow-2xl shadow-purple-900/40 border border-purple-500/30">
                     <div className="text-center">
                         <img
                             src="/logo.png"
                             alt="PG Tattoo Fest Logo"
-                            className="w-32 h-32 md:w-40 md:h-40 mx-auto mb-4 rounded-full border-2 border-purple-500/50 shadow-lg cursor-pointer transition-transform duration-200 hover:scale-105"
+                            className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 mx-auto mb-2 rounded-full border-2 border-purple-500/50 shadow-lg cursor-pointer transition-transform duration-200 hover:scale-105"
                             style={{ transform: `rotateY(${rotation}deg)` }}
                             onClick={handleLogoClick}
                         />
-                        <h1 className="text-3xl md:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-orange-400 animate-gradient">
+                        <h1 className="text-2xl sm:text-3xl font-bold animate-text-gradient">
                             PG TATTOO FEST
                         </h1>
-                        <p className="mt-2 text-sm md:text-base text-gray-300">5ª EDIÇÃO | 06,07,08 de MARÇO de 2026</p>
-                        <p className="mt-1 text-orange-400 font-semibold">🌵 Edição Especial Fiesta Mexicana 🇲🇽</p>
-                        <div key={subtitleIndex} className="h-12 flex items-center justify-center mt-4 animate-fade-in">
-                           <p className="text-gray-200 text-sm md:text-base italic">"{subtitles[subtitleIndex]}"</p>
+                        <p className="mt-1 text-xs sm:text-sm text-gray-300">5ª EDIÇÃO | 06,07,08 de MARÇO de 2026</p>
+                        <p className="mt-0.5 text-orange-400 font-semibold text-sm">🌵 Edição Especial Fiesta Mexicana 🇲🇽</p>
+                        <div key={subtitleIndex} className="h-10 flex items-center justify-center mt-2 animate-fade-in">
+                           <p className="text-gray-200 text-xs sm:text-sm italic">"{subtitles[subtitleIndex]}"</p>
                         </div>
                     </div>
-                    <div className="mt-6">
+                    <div className="mt-4">
                        {links.map((link) => (
                           <LinkButton key={link.text} icon={link.icon} text={link.text} onClick={link.onClick} />
                        ))}
                     </div>
                 </div>
             </main>
-            <footer className="text-center py-4">
+            <footer className="text-center py-2">
                 <button onClick={() => openModal(ModalType.DEVELOPER)} className="text-sm text-gray-400 hover:text-orange-400 transition-colors">
-                    Desenvolvido por <strong>InteligenciArte.IA</strong> ✨
+                    Desenvolvido por <strong className="animate-text-gradient">InteligenciArte.IA</strong> ✨
                 </button>
             </footer>
             <Modal isOpen={activeModal !== null} onClose={closeModal}>
