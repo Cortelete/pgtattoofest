@@ -157,11 +157,11 @@ const App: React.FC = () => {
                         <img
                             src="/logo.png"
                             alt="PG Tattoo Fest Logo"
-                            className="w-44 h-44 sm:w-48 sm:h-48 md:w-52 md:h-52 mx-auto mb-2 cursor-pointer hover:scale-105 transition-transform duration-[1200ms] ease-out"
+                            className="w-56 h-56 sm:w-60 sm:h-60 md:w-64 md:h-64 mx-auto mb-2 cursor-pointer hover:scale-105 transition-transform duration-[1200ms] ease-out"
                             style={{ transform: `rotateY(${rotation}deg)` }}
                             onClick={handleLogoClick}
                         />
-                        <p className="mt-2 text-sm sm:text-base text-gray-300 tracking-wider">5ª EDIÇÃO | 06,07,08 de MARÇO de 2026</p>
+                        <p className="text-sm sm:text-base text-gray-300 tracking-wider">5ª EDIÇÃO | 06,07,08 de MARÇO de 2026</p>
                         <p className="mt-1 text-base sm:text-lg text-white font-serif tracking-wider uppercase">EDIÇÃO ESPECIAL | FIESTA MEXICANA</p>
                     </div>
                     <div className="mt-6">
