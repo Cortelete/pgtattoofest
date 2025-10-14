@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { ModalType } from './types';
 import LinkButton from './components/LinkButton';
 import Modal from './components/Modal';
@@ -61,34 +61,11 @@ const LocationModalContent: React.FC = () => (
 const App: React.FC = () => {
     const [subtitleIndex, setSubtitleIndex] = useState(0);
     const [activeModal, setActiveModal] = useState<ModalType | null>(null);
-
     const [rotation, setRotation] = useState(0);
-    const spinSpeed = useRef(0);
-    const animationFrameId = useRef<number | null>(null);
 
     const handleLogoClick = () => {
-        spinSpeed.current += 15;
-        if (spinSpeed.current > 60) spinSpeed.current = 60;
-        
-        const animate = () => {
-            setRotation(prev => prev + spinSpeed.current);
-            spinSpeed.current *= 0.98; // Damping factor
-
-            if (Math.abs(spinSpeed.current) > 0.1) {
-                animationFrameId.current = requestAnimationFrame(animate);
-            } else {
-                spinSpeed.current = 0;
-                // Snap to nearest 360 to stop upright
-                setRotation(r => Math.round(r / 360) * 360);
-            }
-        };
-
-        if (Math.abs(spinSpeed.current) > 15) { 
-            if (animationFrameId.current) {
-                cancelAnimationFrame(animationFrameId.current);
-            }
-             animate();
-        }
+        // Adiciona 5 rotações completas (1800 graus) para um giro rápido e satisfatório.
+        setRotation(prev => prev + 1800);
     };
 
     useEffect(() => {
@@ -97,7 +74,6 @@ const App: React.FC = () => {
         }, 7000);
         return () => {
           clearInterval(subtitleInterval);
-          if(animationFrameId.current) cancelAnimationFrame(animationFrameId.current);
         };
     }, []);
 
@@ -204,7 +180,7 @@ const App: React.FC = () => {
                         <img
                             src="/logo.png"
                             alt="PG Tattoo Fest Logo"
-                            className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 mx-auto mb-2 rounded-full border-2 border-purple-500/50 shadow-lg cursor-pointer transition-transform duration-200 hover:scale-105"
+                            className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 mx-auto mb-2 rounded-full border-2 border-purple-500/50 shadow-lg cursor-pointer hover:scale-105 transition-transform duration-[1200ms] ease-out"
                             style={{ transform: `rotateY(${rotation}deg)` }}
                             onClick={handleLogoClick}
                         />
