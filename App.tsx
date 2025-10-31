@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useState, useEffect, useRef } from 'react';
 import { ModalType } from './types';
@@ -8,9 +7,10 @@ import { InstagramIcon, WhatsAppIcon, MapPinIcon, CameraIcon, InfoIcon, UsersIco
 
 const DEV_WHATSAPP = "5541988710303";
 const EVENT_WHATSAPP = "5542999126198";
+const HOTEL_WHATSAPP = "5542991378410";
 
 const AboutModalContent: React.FC = () => (
-    <div className="prose prose-invert max-w-none text-gray-300 max-h-[70vh] overflow-y-auto pr-2">
+    <div className="prose prose-invert max-w-none text-gray-300">
         <h2 className="text-2xl font-bold animate-text-gradient mb-4 text-center">🖋️ O que é a PG TATTOO FEST?</h2>
         <p className="text-lg text-center mb-6">A Convenção de Tatuagem de Ponta Grossa</p>
 
@@ -42,6 +42,10 @@ const LocationModalContent: React.FC = () => (
         <p className="text-center text-gray-300 mb-4">Clube Verde (centro) - Ponta Grossa PR</p>
         <div className="aspect-video w-full rounded-lg overflow-hidden border-2 border-red-700/50">
             <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3612.337190011504!2d-50.160128388836516!3d-25.09033397766629!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94e81a3fcfb972ef%3A0x77e544310d9ba50c!2sClube%20Verde%20Sede%20Social!5e0!3m2!1spt-BR!2sbr!4v1719258284699!5m2!1spt-BR!2sbr" width="100%" height="100%" style={{ border: 0 }} allowFullScreen={true} loading="lazy" referrerPolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+        <div className="text-center text-gray-300 mt-4">
+            <p>Rua Doutor Colares, 517</p>
+            <p>Centro, Ponta Grossa - PR</p>
         </div>
         <a href="https://maps.app.goo.gl/29W9hW4c9e4V1Z6f8" target="_blank" rel="noopener noreferrer" className="block w-full text-center mt-4 bg-orange-500 text-white font-bold py-3 px-4 rounded-lg hover:bg-orange-600 transition-colors duration-300">
             Ver no Google Maps
@@ -80,6 +84,30 @@ const App: React.FC = () => {
         window.open(`https://wa.me/${DEV_WHATSAPP}?text=${message}`, '_blank');
         closeModal();
     };
+    
+    const handleHotelContactSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        const formData = new FormData(e.currentTarget);
+        const name = formData.get('name') as string;
+        const people = formData.get('people') as string;
+        const rooms = formData.get('rooms') as string;
+        const observations = formData.get('observations') as string;
+
+        let message = `Olá! Gostaria de informações sobre reserva para a 5ª PG Tattoo Fest, Convenção de Tatuagem de Ponta Grossa.\n\n`;
+        message += `Nome: ${name}\n`;
+        message += `Número de Pessoas: ${people}\n`;
+        if (rooms) {
+            message += `Número de Quartos: ${rooms}\n`;
+        }
+        if (observations) {
+            message += `Observações: ${observations}\n`;
+        }
+        
+        const encodedMessage = encodeURIComponent(message);
+        window.open(`https://wa.me/${HOTEL_WHATSAPP}?text=${encodedMessage}`, '_blank');
+        closeModal();
+    };
+
 
     const links = [
         { text: "O que é a PG Tattoo Fest", icon: <InfoIcon />, onClick: () => openModal(ModalType.ABOUT) },
@@ -255,15 +283,38 @@ const App: React.FC = () => {
                 );
             case ModalType.HOTEL_PARTNER:
                 return (
-                    <div>
+                    <form onSubmit={handleHotelContactSubmit}>
                         <h2 className="text-2xl font-bold text-center mb-4 animate-text-gradient">🏨 Hotel Parceiro</h2>
-                        <p className="text-center text-gray-300 mb-6">
-                            Garanta sua estadia com condições especiais no hotel parceiro do evento. Entre em contato para mais informações e reservas.
+                        <img src="/hotel.jpg" alt="Logo Hotel Parceiro" className="w-36 h-36 mx-auto mb-4 rounded-full object-cover border-2 border-red-600/50" />
+                        <p className="text-center text-gray-300 mb-4">
+                            Preencha os dados abaixo para consultar condições especiais no hotel parceiro do evento.
                         </p>
-                        <a href={`https://wa.me/${EVENT_WHATSAPP}?text=${encodeURIComponent('Olá! Gostaria de informações sobre o hotel parceiro do PG Tattoo Fest.')}`} target="_blank" rel="noopener noreferrer" className="block w-full text-center bg-orange-500 text-white font-bold py-3 px-4 rounded-lg hover:bg-orange-600 transition-colors duration-300">
-                            Consultar Condições
-                        </a>
-                    </div>
+                        
+                        <div className="my-4 p-3 bg-red-900/30 border border-red-600/50 rounded-lg flex items-center justify-center space-x-3 text-center animate-pulse-slow">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="5" r="1"/><path d="m9 20 3-6 3 6"/><path d="m6 8 6 2 6-2"/><path d="M12 10v4"/></svg>
+                            <p className="text-orange-300 font-semibold">
+                                A apenas 200 metros do local do evento!
+                            </p>
+                        </div>
+
+                        <div className="space-y-4">
+                            <input name="name" type="text" placeholder="Seu Nome Completo" required className="w-full p-3 bg-red-950/50 border border-red-600/50 rounded-lg focus:ring-2 focus:ring-red-500 focus:outline-none" />
+                            <div className="grid grid-cols-2 gap-4">
+                                <input name="people" type="number" placeholder="Nº de Pessoas" min="1" required className="w-full p-3 bg-red-950/50 border border-red-600/50 rounded-lg focus:ring-2 focus:ring-red-500 focus:outline-none" />
+                                <input name="rooms" type="number" placeholder="Nº de Quartos (Opcional)" min="1" className="w-full p-3 bg-red-950/50 border border-red-600/50 rounded-lg focus:ring-2 focus:ring-red-500 focus:outline-none" />
+                            </div>
+                            <textarea name="observations" placeholder="Observações extras (opcional)" rows={2} className="w-full p-3 bg-red-950/50 border border-red-600/50 rounded-lg focus:ring-2 focus:ring-red-500 focus:outline-none"></textarea>
+                            <div className="flex items-start space-x-3">
+                                <input id="confirm-event" name="confirm-event" type="checkbox" required className="h-5 w-5 mt-1 bg-red-950/50 border-red-600/50 rounded text-orange-500 focus:ring-orange-500" />
+                                <label htmlFor="confirm-event" className="text-sm text-gray-300">
+                                    Ao marcar esta caixa, você confirma que a reserva é para um participante da <strong>5ª PG Tattoo Fest</strong>, para garantir as condições especiais.
+                                </label>
+                            </div>
+                        </div>
+                        <button type="submit" className="w-full text-center mt-6 bg-orange-500 text-white font-bold py-3 px-4 rounded-lg hover:bg-orange-600 transition-colors duration-300">
+                            Consultar Condições via WhatsApp
+                        </button>
+                    </form>
                 );
             default:
                 return null;
