@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { useState, useEffect, useRef } from 'react';
 import { ModalType } from './types';
@@ -39,15 +40,20 @@ const AboutModalContent: React.FC = () => (
 const LocationModalContent: React.FC = () => (
     <div>
         <h2 className="text-2xl font-bold text-center mb-4 animate-text-gradient">Localização</h2>
-        <p className="text-center text-gray-300 mb-4">Clube Verde (centro) - Ponta Grossa PR</p>
+        <p className="text-center text-gray-300 mb-4">Clube Verde - Sede Social</p>
         <div className="aspect-video w-full rounded-lg overflow-hidden border-2 border-red-700/50">
-            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3612.337190011504!2d-50.160128388836516!3d-25.09033397766629!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94e81a3fcfb972ef%3A0x77e544310d9ba50c!2sClube%20Verde%20Sede%20Social!5e0!3m2!1spt-BR!2sbr!4v1719258284699!5m2!1spt-BR!2sbr" width="100%" height="100%" style={{ border: 0 }} allowFullScreen={true} loading="lazy" referrerPolicy="no-referrer-when-downgrade"></iframe>
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3612.5152229986326!2d-50.15814232369661!3d-25.08437937776472!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94e81a067605333d%3A0x2862dff83b589416!2sClube%20Verde!5e0!3m2!1spt-BR!2sbr!4v1722448834076!5m2!1spt-BR!2sbr" width="100%" height="100%" style={{ border: 0 }} allowFullScreen={true} loading="lazy" referrerPolicy="no-referrer-when-downgrade"></iframe>
         </div>
         <div className="text-center text-gray-300 mt-4">
-            <p>Rua Doutor Colares, 517</p>
-            <p>Centro, Ponta Grossa - PR</p>
+            <p>Rua Cel. Dulcídio, 901 - Centro</p>
+            <p>Ponta Grossa - PR, 84010-280</p>
         </div>
-        <a href="https://maps.app.goo.gl/29W9hW4c9e4V1Z6f8" target="_blank" rel="noopener noreferrer" className="block w-full text-center mt-4 bg-orange-500 text-white font-bold py-3 px-4 rounded-lg hover:bg-orange-600 transition-colors duration-300">
+        <a 
+            href="https://www.google.com/maps/search/?api=1&query=Clube%20Verde%20Sede%20Social%2C%20Ponta%20Grossa" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="block w-full text-center mt-4 bg-orange-500 text-white font-bold py-3 px-4 rounded-lg hover:bg-orange-600 transition-colors duration-300"
+        >
             Ver no Google Maps
         </a>
     </div>
@@ -261,11 +267,15 @@ const App: React.FC = () => {
                 );
             case ModalType.GROUP_INVITE:
                 return (
-                    <div>
-                        <h2 className="text-2xl font-bold text-center mb-4 animate-text-gradient">Grupo de Telas PG Tattoo Fest</h2>
-                        <p className="text-center text-gray-300 mb-6">Participe do nosso grupo exclusivo para artistas e entusiastas para discutir e compartilhar telas e artes.</p>
-                        <a href="https://chat.whatsapp.com/GOKZhjfstJ68TvEPcmd0jL" target="_blank" rel="noopener noreferrer" className="block w-full text-center bg-green-500 text-white font-bold py-3 px-4 rounded-lg hover:bg-green-600 transition-colors duration-300">
-                            Entrar no Grupo
+                    <div className="flex flex-col items-center text-center">
+                        <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-red-900/50 border border-red-700/50">
+                            <UsersIcon />
+                        </div>
+                        <h2 className="text-2xl font-bold mb-4 animate-text-gradient">Grupo de Telas PG Tattoo Fest</h2>
+                        <p className="text-gray-300 mb-6 text-lg">Participe do nosso grupo exclusivo para artistas e entusiastas.</p>
+                        <a href="https://chat.whatsapp.com/GOKZhjfstJ68TvEPcmd0jL" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center space-x-2 w-full text-center bg-green-500 text-white font-bold py-3 px-4 rounded-lg hover:bg-green-600 transition-colors duration-300">
+                            <WhatsAppIcon />
+                            <span>Entrar no Grupo</span>
                         </a>
                     </div>
                 );
@@ -284,10 +294,44 @@ const App: React.FC = () => {
             case ModalType.HOTEL_PARTNER:
                 return (
                     <form onSubmit={handleHotelContactSubmit}>
-                        <h2 className="text-2xl font-bold text-center mb-4 animate-text-gradient">🏨 Hotel Parceiro</h2>
+                        <div className="flex justify-center items-center text-center mb-4">
+                            <h2 className="text-2xl font-bold animate-text-gradient">🏨 Hotel Parceiro</h2>
+                            <a 
+                                href="https://www.instagram.com/hotelpax_/" 
+                                target="_blank" 
+                                rel="noopener noreferrer" 
+                                aria-label="Instagram do Hotel Parceiro"
+                                className="ml-3 text-gray-400 hover:text-pink-500 transition-colors duration-300 transform hover:scale-110"
+                                onClick={(e) => e.stopPropagation()}
+                            >
+                                <InstagramIcon />
+                            </a>
+                        </div>
                         <img src="/hotel.jpg" alt="Logo Hotel Parceiro" className="w-36 h-36 mx-auto mb-4 rounded-full object-cover border-2 border-red-600/50" />
+                        
+                        <div className="text-center my-4 p-3 bg-red-900/20 border border-red-700/30 rounded-lg">
+                            <p className="text-gray-200">
+                                Se você vai participar do evento, conte com nosso hotel parceiro, o <strong>Hotel Pax</strong>!
+                            </p>
+                            <div className="mt-2 flex items-center justify-center space-x-2">
+                                <p className="text-gray-400 text-sm">
+                                    📌 Coronel Bittencourt, 92, Centro, Ponta Grossa - PR
+                                </p>
+                                <a 
+                                    href="https://www.google.com/maps/search/?api=1&query=Hotel%20Pax%2C%20Ponta%20Grossa" 
+                                    target="_blank" 
+                                    rel="noopener noreferrer" 
+                                    aria-label="Ver no Google Maps"
+                                    className="text-gray-400 hover:text-orange-400 transition-colors duration-300 transform hover:scale-110"
+                                    onClick={(e) => e.stopPropagation()}
+                                >
+                                    <MapPinIcon />
+                                </a>
+                            </div>
+                        </div>
+
                         <p className="text-center text-gray-300 mb-4">
-                            Preencha os dados abaixo para consultar condições especiais no hotel parceiro do evento.
+                            Preencha os dados abaixo para consultar condições especiais.
                         </p>
                         
                         <div className="my-4 p-3 bg-red-900/30 border border-red-600/50 rounded-lg flex items-center justify-center space-x-3 text-center animate-pulse-slow">

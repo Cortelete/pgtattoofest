@@ -40,7 +40,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
       }}
     >
       <div
-        className="relative w-full max-w-lg bg-red-950/90 border border-red-700/50 rounded-xl shadow-2xl shadow-red-800/50 text-white m-4 flex flex-col max-h-[90vh]"
+        className="relative w-full max-w-lg bg-red-950/90 border border-red-700/50 rounded-xl shadow-2xl shadow-red-800/50 text-white flex flex-col max-h-[90vh]"
         onClick={(e) => e.stopPropagation()}
         style={{
           animation: isClosing
@@ -48,7 +48,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
             : 'fade-in-scale 0.3s ease-out forwards',
         }}
       >
-        <div className="overflow-y-auto p-6">
+        <div className="flex-grow overflow-y-auto p-6 min-h-0">
             {children}
         </div>
         <button
