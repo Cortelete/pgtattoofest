@@ -1,10 +1,10 @@
 
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { ModalType } from './types';
 import LinkButton from './components/LinkButton';
 import Modal from './components/Modal';
-import { InstagramIcon, WhatsAppIcon, MapPinIcon, CameraIcon, InfoIcon, UsersIcon, CodeIcon, HotelIcon } from './components/icons';
+import { InstagramIcon, WhatsAppIcon, MapPinIcon, CameraIcon, InfoIcon, UsersIcon, CodeIcon, HotelIcon, ChevronLeftIcon, ChevronRightIcon, XIcon } from './components/icons';
 
 const DEV_WHATSAPP = "5541988710303";
 const EVENT_WHATSAPP = "5542999126198";
@@ -49,12 +49,12 @@ const LocationModalContent: React.FC = () => (
     </div>
 );
 
+
 const App: React.FC = () => {
     const [activeModal, setActiveModal] = useState<ModalType | null>(null);
     const [rotation, setRotation] = useState(0);
 
     const handleLogoClick = () => {
-        // Adiciona 5 rotações completas (1800 graus) para um giro rápido e satisfatório.
         setRotation(prev => prev + 1800);
     };
 
@@ -86,10 +86,130 @@ const App: React.FC = () => {
         { text: "Instagram", icon: <InstagramIcon />, onClick: () => window.open('https://www.instagram.com/pgtattoofest/', '_blank') },
         { text: "Localização", icon: <MapPinIcon />, onClick: () => openModal(ModalType.LOCATION) },
         { text: "Reserva de Estandes", icon: <WhatsAppIcon />, onClick: () => openModal(ModalType.RESERVATION) },
-        { text: "Fotos", icon: <CameraIcon />, onClick: () => window.open('https://drive.google.com/drive/folders/1Je4XS5AR5NST3PtOHFtagaEZ1tMHjavu', '_blank') },
+        { text: "Fotos", icon: <CameraIcon />, onClick: () => openModal(ModalType.PHOTOS) },
         { text: "Hotel Parceiro", icon: <HotelIcon />, onClick: () => openModal(ModalType.HOTEL_PARTNER) },
         { text: "Grupo de Telas", icon: <UsersIcon />, onClick: () => openModal(ModalType.GROUP_INVITE) },
     ];
+
+    const PhotosModalContent: React.FC = () => {
+        const [currentIndex, setCurrentIndex] = useState(0);
+        const [isFullscreen, setIsFullscreen] = useState(false);
+        const [isLoading, setIsLoading] = useState(true);
+        const touchStartRef = useRef<number | null>(null);
+        const touchEndRef = useRef<number | null>(null);
+        const totalImages = 20;
+        const minSwipeDistance = 50;
+
+        const nextImage = () => {
+            setIsLoading(true);
+            setCurrentIndex((prevIndex) => (prevIndex + 1) % totalImages);
+        };
+
+        const prevImage = () => {
+            setIsLoading(true);
+            setCurrentIndex((prevIndex) => (prevIndex - 1 + totalImages) % totalImages);
+        };
+
+        const handleTouchStart = (e: React.TouchEvent) => {
+            touchEndRef.current = null;
+            touchStartRef.current = e.targetTouches[0].clientX;
+        };
+
+        const handleTouchMove = (e: React.TouchEvent) => {
+            touchEndRef.current = e.targetTouches[0].clientX;
+        };
+
+        const handleTouchEnd = () => {
+            if (!touchStartRef.current || !touchEndRef.current) return;
+            const distance = touchStartRef.current - touchEndRef.current;
+            const isLeftSwipe = distance > minSwipeDistance;
+            const isRightSwipe = distance < -minSwipeDistance;
+
+            if (isLeftSwipe) nextImage();
+            else if (isRightSwipe) prevImage();
+
+            touchStartRef.current = null;
+            touchEndRef.current = null;
+        };
+
+        useEffect(() => {
+            const handleKeyDown = (e: KeyboardEvent) => {
+                if (activeModal !== ModalType.PHOTOS) return;
+                if (e.key === 'ArrowRight') nextImage();
+                else if (e.key === 'ArrowLeft') prevImage();
+                else if (isFullscreen && e.key === 'Escape') setIsFullscreen(false);
+            };
+            
+            window.addEventListener('keydown', handleKeyDown);
+            return () => window.removeEventListener('keydown', handleKeyDown);
+        }, [activeModal, isFullscreen, currentIndex]);
+
+        useEffect(() => {
+            setIsLoading(true);
+            const nextSrc = `/${((currentIndex + 1) % totalImages) + 1}.JPG`;
+            const prevSrc = `/${((currentIndex - 1 + totalImages) % totalImages) + 1}.JPG`;
+            new Image().src = nextSrc;
+            new Image().src = prevSrc;
+        }, [currentIndex]);
+        
+        return (
+            <div>
+                <h2 className="text-2xl font-bold text-center mb-4 animate-text-gradient">📷 Fotos do Evento</h2>
+                <div className="relative w-full aspect-[4/3] bg-black/50 rounded-lg overflow-hidden flex items-center justify-center select-none"
+                    onTouchStart={handleTouchStart}
+                    onTouchMove={handleTouchMove}
+                    onTouchEnd={handleTouchEnd}>
+    
+                    {isLoading && <div className="absolute inset-0 flex items-center justify-center text-white z-10">Carregando...</div>}
+                    
+                    <img
+                        src={`/${currentIndex + 1}.JPG`}
+                        alt={`Foto ${currentIndex + 1} do PG Tattoo Fest`}
+                        className={`max-h-full max-w-full object-contain cursor-pointer transition-opacity duration-300 ${isLoading ? 'opacity-0' : 'opacity-100 hover:scale-105'}`}
+                        onClick={() => setIsFullscreen(true)}
+                        onLoad={() => setIsLoading(false)}
+                    />
+                    
+                    <button aria-label="Imagem anterior" onClick={(e) => { e.stopPropagation(); prevImage(); }} className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 p-2 rounded-full text-white hover:bg-red-700/80 transition-colors focus:outline-none focus:ring-2 focus:ring-red-500 disabled:opacity-50 z-20">
+                        <ChevronLeftIcon />
+                    </button>
+                    <button aria-label="Próxima imagem" onClick={(e) => { e.stopPropagation(); nextImage(); }} className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 p-2 rounded-full text-white hover:bg-red-700/80 transition-colors focus:outline-none focus:ring-2 focus:ring-red-500 disabled:opacity-50 z-20">
+                        <ChevronRightIcon />
+                    </button>
+                    <div className="absolute bottom-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded-md z-20">
+                        {currentIndex + 1} / {totalImages}
+                    </div>
+                </div>
+    
+                {isFullscreen && (
+                    <div className="fixed inset-0 bg-black/90 backdrop-blur-sm z-[100] flex items-center justify-center" onClick={() => setIsFullscreen(false)}>
+                        <div className="relative w-full h-full p-4 flex items-center justify-center" onClick={(e) => e.stopPropagation()}
+                            onTouchStart={handleTouchStart} onTouchMove={handleTouchMove} onTouchEnd={handleTouchEnd}>
+                            
+                            <img
+                                src={`/${currentIndex + 1}.JPG`}
+                                alt={`Foto ${currentIndex + 1} do PG Tattoo Fest`}
+                                className="max-h-[95vh] max-w-[95vw] object-contain select-none shadow-2xl shadow-red-500/50"
+                            />
+    
+                            <button aria-label="Fechar tela cheia" onClick={() => setIsFullscreen(false)} className="absolute top-4 right-4 bg-black/50 p-2 rounded-full text-white hover:bg-red-700/80 transition-colors z-10 focus:outline-none focus:ring-2 focus:ring-red-500">
+                                <XIcon />
+                            </button>
+                            <button aria-label="Imagem anterior" onClick={(e) => { e.stopPropagation(); prevImage(); }} className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 p-3 rounded-full text-white hover:bg-red-700/80 transition-colors focus:outline-none focus:ring-2 focus:ring-red-500 disabled:opacity-50">
+                                <ChevronLeftIcon />
+                            </button>
+                            <button aria-label="Próxima imagem" onClick={(e) => { e.stopPropagation(); nextImage(); }} className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 p-3 rounded-full text-white hover:bg-red-700/80 transition-colors focus:outline-none focus:ring-2 focus:ring-red-500 disabled:opacity-50">
+                                <ChevronRightIcon />
+                            </button>
+                             <div className="absolute bottom-4 right-4 bg-black/70 text-white text-sm px-3 py-1 rounded-md">
+                                {currentIndex + 1} / {totalImages}
+                            </div>
+                        </div>
+                    </div>
+                )}
+            </div>
+        );
+    };
 
     const renderModalContent = () => {
         switch (activeModal) {
@@ -97,6 +217,8 @@ const App: React.FC = () => {
                 return <AboutModalContent />;
             case ModalType.LOCATION:
                 return <LocationModalContent />;
+            case ModalType.PHOTOS:
+                return <PhotosModalContent />;
             case ModalType.RESERVATION:
                 return (
                     <form onSubmit={handleReservationSubmit}>
