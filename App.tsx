@@ -268,9 +268,11 @@ const App: React.FC = () => {
             case ModalType.GROUP_INVITE:
                 return (
                     <div className="flex flex-col items-center text-center">
-                        <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-red-900/50 border border-red-700/50">
-                            <UsersIcon />
-                        </div>
+                        <img 
+                            src="/moeda.png" 
+                            alt="Moeda Grupo de Telas" 
+                            className="mb-4 h-16 w-16" 
+                        />
                         <h2 className="text-2xl font-bold mb-4 animate-text-gradient">Grupo de Telas PG Tattoo Fest</h2>
                         <p className="text-gray-300 mb-6 text-lg">Participe do nosso grupo exclusivo para artistas e entusiastas.</p>
                         <a href="https://chat.whatsapp.com/GOKZhjfstJ68TvEPcmd0jL" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center space-x-2 w-full text-center bg-green-500 text-white font-bold py-3 px-4 rounded-lg hover:bg-green-600 transition-colors duration-300">
