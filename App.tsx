@@ -32,7 +32,7 @@ const AboutModalContent: React.FC = () => (
             <p>É uma celebração da arte em sua forma mais autêntica. O ponto de encontro de quem vive e respira cultura alternativa.</p>
             
             <h3 className="text-xl font-semibold text-red-400 border-l-4 border-red-400 pl-4">📅 Próxima Edição</h3>
-            <p className="font-bold">06, 07 e 08 de março de 2026 com o tema “Fiesta Mexicana”. Prepare-se!</p>
+            <p className="font-bold">09, 10 e 11 de outubro de 2026 com o tema “Fiesta Mexicana”. Prepare-se!</p>
         </div>
     </div>
 );
@@ -380,7 +380,7 @@ const App: React.FC = () => {
                             style={{ transform: `rotateY(${rotation}deg)` }}
                             onClick={handleLogoClick}
                         />
-                        <p className="text-sm sm:text-base text-gray-300 tracking-wider -mt-4">5ª EDIÇÃO | 06,07,08 de MARÇO de 2026</p>
+                        <p className="text-sm sm:text-base text-gray-300 tracking-wider -mt-4">5ª EDIÇÃO | 09, 10 e 11 de OUTUBRO de 2026</p>
                         <p className="mt-0 text-base sm:text-lg text-white font-serif tracking-wider uppercase">EDIÇÃO ESPECIAL | FIESTA MEXICANA</p>
                     </div>
                     <div className="mt-4">
